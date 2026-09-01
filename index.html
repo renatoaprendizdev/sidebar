@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="description"
+    content="Sidebar administrativo moderno para sistema de gestão de barbearia."
+>
+
+<title>BarberFlow | Painel Administrativo</title>
+
+<!-- Google Fonts -->
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+>
+
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+<!-- Ícones -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+<!-- CSS -->
+<link
+    rel="stylesheet"
+    href="style.css"
+>
+
+
+</head>
+
+<body>
+
+
+<!-- ==========================================
+     SIDEBAR
+=========================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+    <!-- Logo -->
+    <div class="sidebar-header">
+
+        <a href="#" class="logo">
+
+            <span class="logo-icon">
+                <i class="fa-solid fa-scissors"></i>
+            </span>
+
+            <span class="logo-text">
+                BARBER<span>FLOW</span>
+            </span>
+
+        </a>
+
+        <!-- Botão recolher -->
+        <button
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            type="button"
+            aria-label="Recolher menu"
+            title="Recolher menu"
+        >
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+    </div>
+
+
+    <!-- ==========================================
+         PERFIL
+    =========================================== -->
+
+    <div class="profile">
+
+        <div class="profile-avatar">
+            <span>RC</span>
+        </div>
+
+        <div class="profile-info">
+
+            <strong>Rafael Costa</strong>
+
+            <span>Administrador</span>
+
+        </div>
+
+        <button
+            class="profile-menu"
+            type="button"
+            aria-label="Opções do perfil"
+        >
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+
+    </div>
+
+
+    <!-- ==========================================
+         NAVEGAÇÃO
+    =========================================== -->
+
+    <nav class="sidebar-nav">
+
+        <p class="nav-title">
+            PRINCIPAL
+        </p>
+
+        <ul class="nav-list">
+
+            <!-- Dashboard -->
+            <li class="nav-item active">
+
+                <a href="#" class="nav-link">
+
+                    <span class="nav-icon">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Dashboard
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Agenda -->
+            <li class="nav-item">
+
+                <a href="#" class="nav-link">
+
+                    <span class="nav-icon">
+                        <i class="fa-regular fa-calendar-days"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Agenda
+                    </span>
+
+                    <span class="nav-badge">
+                        5
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Clientes -->
+            <li class="nav-item">
+
+                <a href="#" class="nav-link">
+
+                    <span class="nav-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Clientes
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Profissionais -->
+            <li class="nav-item">
+
+                <a href="#" class="nav-link">
+
+                    <span class="nav-icon">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Profissionais
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Serviços -->
+            <li class="nav-item">
+
+                <a href="#" class="nav-link">
+
+                    <span class="nav-icon">
+                        <i class="fa-solid fa-scissors"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Serviços
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <p class="nav-title">
+                GESTÃO
+            </p>
+
+
+            <!-- Financeiro -->
+            <li class="nav-item">
+
+                <a href="#" class="nav-link">
+
+                    <span class="nav-icon">
+                        <i class="fa-solid fa-wallet"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Financeiro
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Relatórios -->
+            <li class="nav-item">
+
+                <a href="#" class="nav-link">
+
+                    <span class="nav-icon">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Relatórios
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <p class="nav-title">
+                SISTEMA
+            </p>
+
+
+            <!-- Configurações -->
+            <li class="nav-item">
+
+                <a href="#" class="nav-link">
+
+                    <span class="nav-icon">
+                        <i class="fa-solid fa-gear"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Configurações
+                    </span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <!-- ==========================================
+         RODAPÉ DO SIDEBAR
+    =========================================== -->
+
+    <div class="sidebar-footer">
+
+        <!-- Ajuda -->
+        <a href="#" class="footer-link">
+
+            <span class="nav-icon">
+                <i class="fa-regular fa-circle-question"></i>
+            </span>
+
+            <span class="nav-text">
+                Central de ajuda
+            </span>
+
+        </a>
+
+
+        <!-- Sair -->
+        <button
+            class="logout-button"
+            type="button"
+        >
+
+            <span class="nav-icon">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </span>
+
+            <span class="nav-text">
+                Sair
+            </span>
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- ==========================================
+     OVERLAY MOBILE
+=========================================== -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+
+<!-- ==========================================
+     CONTEÚDO PRINCIPAL
+     Apenas demonstração do Sidebar
+=========================================== -->
+
+<main class="main-content">
+
+    <header class="main-header">
+
+        <button
+            class="mobile-menu"
+            id="mobileMenu"
+            type="button"
+            aria-label="Abrir menu"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div>
+
+            <span class="page-label">
+                Painel administrativo
+            </span>
+
+            <h1>
+                Dashboard
+            </h1>
+
+        </div>
+
+    </header>
+
+
+    <section class="content-placeholder">
+
+        <div class="placeholder-icon">
+            <i class="fa-solid fa-scissors"></i>
+        </div>
+
+        <h2>
+            BarberFlow
+        </h2>
+
+        <p>
+            Área reservada para o conteúdo do sistema.
+        </p>
+
+    </section>
+
+</main>
+
+
+<!-- JavaScript -->
+<script src="script.js"></script>
+
+</body>
+
+</html>

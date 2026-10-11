@@ -1,413 +1,488 @@
-/* =========================================================
-BARBERFLOW
-SCRIPT.JS
-SIDEBAR ADMINISTRATIVO
-========================================================= */
+/* =========================================
+   BARBERFLOW — PAINEL ADMINISTRATIVO
+   Arquivo: script.js
+========================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+    "use strict";
 
+    // =========================================
+    // 1. ELEMENTOS DO HTML
+    // =========================================
 
-/* =====================================================
-   ELEMENTOS
-   ===================================================== */
+    const body = document.body;
+    const sidebar = document.getElementById("sidebar");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
 
-const sidebar = document.getElementById("sidebar");
-const sidebarToggle = document.getElementById("sidebarToggle");
-const mobileMenu = document.getElementById("mobileMenu");
-const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const navItems = document.querySelectorAll(".nav-item");
+    const profileButton = document.querySelector(".profile-menu");
+    const logoutButton = document.querySelector(".logout-button");
 
-const navItems = document.querySelectorAll(".nav-item");
-const navLinks = document.querySelectorAll(".nav-link");
+    const MOBILE_BREAKPOINT = 900;
+    const STORAGE_KEY = "barberFlowSidebarCollapsed";
 
-const logoutButton = document.querySelector(".logout-button");
-const profileMenu = document.querySelector(".profile-menu");
-
-
-/* =====================================================
-   VERIFICAÇÃO
-   ===================================================== */
-
-if (!sidebar) {
-    console.error("Sidebar não encontrado.");
-    return;
-}
-
-
-/* =====================================================
-   DETECTAR MOBILE
-   ===================================================== */
-
-const isMobile = () => {
-    return window.innerWidth <= 700;
-};
-
-
-/* =====================================================
-   ESTADO SALVO DO SIDEBAR
-   ===================================================== */
-
-const sidebarCollapsed =
-    localStorage.getItem("barberflow-sidebar-collapsed");
-
-if (
-    sidebarCollapsed === "true" &&
-    !isMobile()
-) {
-    sidebar.classList.add("collapsed");
-}
-
-
-/* =====================================================
-   RECOLHER / EXPANDIR SIDEBAR
-   ===================================================== */
-
-if (sidebarToggle) {
-
-    sidebarToggle.addEventListener("click", () => {
-
-        if (isMobile()) {
-            return;
-        }
-
-        sidebar.classList.toggle("collapsed");
-
-        const isCollapsed =
-            sidebar.classList.contains("collapsed");
-
-        localStorage.setItem(
-            "barberflow-sidebar-collapsed",
-            isCollapsed
-        );
-
-        updateToggleLabel();
-
-    });
-
-}
-
-
-/* =====================================================
-   ATUALIZAR LABEL DO BOTÃO
-   ===================================================== */
-
-function updateToggleLabel() {
-
-    if (!sidebarToggle) {
+    if (!sidebar) {
+        console.error("BarberFlow: sidebar não encontrada no HTML.");
         return;
     }
 
-    const isCollapsed =
-        sidebar.classList.contains("collapsed");
+    // =========================================
+    // 2. VERIFICAR O TAMANHO DA TELA
+    // =========================================
 
-    if (isCollapsed) {
-
-        sidebarToggle.setAttribute(
-            "aria-label",
-            "Expandir menu"
-        );
-
-        sidebarToggle.setAttribute(
-            "title",
-            "Expandir menu"
-        );
-
-    } else {
-
-        sidebarToggle.setAttribute(
-            "aria-label",
-            "Recolher menu"
-        );
-
-        sidebarToggle.setAttribute(
-            "title",
-            "Recolher menu"
-        );
-
+    function isMobile() {
+        return window.innerWidth <= MOBILE_BREAKPOINT;
     }
 
-}
+    // =========================================
+    // 3. RECOLHER E EXPANDIR A SIDEBAR
+    // =========================================
 
-
-/* =====================================================
-   ABRIR MENU MOBILE
-   ===================================================== */
-
-if (mobileMenu) {
-
-    mobileMenu.addEventListener("click", () => {
-
-        sidebar.classList.add("mobile-open");
-
-        sidebarOverlay.classList.add("active");
-
-        document.body.style.overflow = "hidden";
-
-    });
-
-}
-
-
-/* =====================================================
-   FECHAR MENU MOBILE
-   ===================================================== */
-
-function closeMobileSidebar() {
-
-    sidebar.classList.remove("mobile-open");
-
-    sidebarOverlay.classList.remove("active");
-
-    document.body.style.overflow = "";
-
-}
-
-
-/* =====================================================
-   OVERLAY
-   ===================================================== */
-
-if (sidebarOverlay) {
-
-    sidebarOverlay.addEventListener(
-        "click",
-        closeMobileSidebar
-    );
-
-}
-
-
-/* =====================================================
-   LINKS DO MENU
-   ===================================================== */
-
-navLinks.forEach((link, index) => {
-
-    link.addEventListener("click", (event) => {
-
-        /*
-         * Como este é um template de demonstração,
-         * impedimos o carregamento do "#".
-         *
-         * Quando forem criadas páginas reais,
-         * basta colocar o endereço no href.
-         */
-
-        if (link.getAttribute("href") === "#") {
-            event.preventDefault();
-        }
-
-
-        /* ---------------------------------------------
-           REMOVER ITEM ATIVO
-        --------------------------------------------- */
-
-        navItems.forEach(item => {
-            item.classList.remove("active");
-        });
-
-
-        /* ---------------------------------------------
-           ATIVAR ITEM CLICADO
-        --------------------------------------------- */
-
-        const currentItem =
-            link.closest(".nav-item");
-
-        if (currentItem) {
-            currentItem.classList.add("active");
-        }
-
-
-        /* ---------------------------------------------
-           FECHAR SIDEBAR NO CELULAR
-        --------------------------------------------- */
-
+    function setCollapsed(collapsed) {
         if (isMobile()) {
-            closeMobileSidebar();
-        }
-
-    });
-
-});
-
-
-/* =====================================================
-   MENU DO PERFIL
-   ===================================================== */
-
-if (profileMenu) {
-
-    profileMenu.addEventListener("click", () => {
-
-        console.log(
-            "Menu de opções do perfil."
-        );
-
-        /*
-         * Futuramente podemos abrir aqui:
-         *
-         * - Meu perfil
-         * - Alterar senha
-         * - Preferências
-         * - Sair
-         */
-
-    });
-
-}
-
-
-/* =====================================================
-   BOTÃO SAIR
-   ===================================================== */
-
-if (logoutButton) {
-
-    logoutButton.addEventListener("click", () => {
-
-        const confirmLogout = confirm(
-            "Deseja realmente sair do sistema?"
-        );
-
-        if (!confirmLogout) {
+            body.classList.remove("sidebar-collapsed");
             return;
         }
 
+        body.classList.toggle("sidebar-collapsed", collapsed);
 
-        /*
-         * Aqui podemos futuramente:
-         *
-         * - limpar sessão
-         * - remover localStorage
-         * - redirecionar para login
-         */
+        if (sidebarToggle) {
+            const label = collapsed
+                ? "Expandir menu"
+                : "Recolher menu";
 
-        localStorage.removeItem(
-            "barberflow-sidebar-collapsed"
+            sidebarToggle.setAttribute("aria-label", label);
+            sidebarToggle.setAttribute("title", label);
+            sidebarToggle.setAttribute(
+                "aria-expanded",
+                String(!collapsed)
+            );
+        }
+
+        // Salva a preferência do usuário no navegador.
+        try {
+            localStorage.setItem(
+                STORAGE_KEY,
+                String(collapsed)
+            );
+        } catch (error) {
+            console.warn(
+                "Não foi possível salvar a preferência da sidebar."
+            );
+        }
+    }
+
+    // Recupera o estado salvo ao abrir a página.
+    let sidebarWasCollapsed = false;
+
+    try {
+        sidebarWasCollapsed =
+            localStorage.getItem(STORAGE_KEY) === "true";
+    } catch (error) {
+        sidebarWasCollapsed = false;
+    }
+
+    setCollapsed(sidebarWasCollapsed);
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", () => {
+            if (isMobile()) {
+                closeMobileSidebar();
+                return;
+            }
+
+            const collapsed =
+                body.classList.contains("sidebar-collapsed");
+
+            setCollapsed(!collapsed);
+        });
+    }
+
+    // =========================================
+    // 4. MENU MOBILE
+    // =========================================
+
+    function openMobileSidebar() {
+        if (!isMobile()) return;
+
+        body.classList.add("mobile-sidebar-open");
+
+        if (sidebarOverlay) {
+            sidebarOverlay.classList.add("is-visible");
+        }
+
+        if (mobileMenu) {
+            mobileMenu.setAttribute("aria-expanded", "true");
+            mobileMenu.setAttribute("aria-label", "Fechar menu");
+        }
+    }
+
+    function closeMobileSidebar() {
+        body.classList.remove("mobile-sidebar-open");
+
+        if (sidebarOverlay) {
+            sidebarOverlay.classList.remove("is-visible");
+        }
+
+        if (mobileMenu) {
+            mobileMenu.setAttribute("aria-expanded", "false");
+            mobileMenu.setAttribute("aria-label", "Abrir menu");
+        }
+    }
+
+    if (mobileMenu) {
+        mobileMenu.setAttribute("aria-expanded", "false");
+
+        mobileMenu.addEventListener("click", () => {
+            const isOpen =
+                body.classList.contains("mobile-sidebar-open");
+
+            if (isOpen) {
+                closeMobileSidebar();
+            } else {
+                openMobileSidebar();
+            }
+        });
+    }
+
+    // Fecha ao clicar no fundo escuro.
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener(
+            "click",
+            closeMobileSidebar
         );
+    }
 
-
-        alert(
-            "Sessão encerrada com sucesso!"
-        );
-
-
-        /*
-         * Exemplo de redirecionamento:
-         *
-         * window.location.href = "login.html";
-         */
-
+    // Fecha o menu quando o usuário pressiona ESC.
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closeMobileSidebar();
+            closeProfileMenu();
+            closeLogoutDialog();
+        }
     });
 
-}
-
-
-/* =====================================================
-   FECHAR SIDEBAR COM ESC
-   ===================================================== */
-
-document.addEventListener("keydown", (event) => {
-
-    if (event.key === "Escape") {
-
+    // Ajusta o menu quando a tela muda de tamanho.
+    window.addEventListener("resize", () => {
         if (isMobile()) {
+            body.classList.remove("sidebar-collapsed");
+        } else {
             closeMobileSidebar();
+
+            try {
+                body.classList.toggle(
+                    "sidebar-collapsed",
+                    localStorage.getItem(STORAGE_KEY) === "true"
+                );
+            } catch (error) {
+                body.classList.remove("sidebar-collapsed");
+            }
+        }
+    });
+
+    // =========================================
+    // 5. NAVEGAÇÃO E ITEM ATIVO
+    // =========================================
+
+    navItems.forEach((item) => {
+        const link = item.querySelector(".nav-link");
+
+        if (!link) return;
+
+        link.addEventListener("click", (event) => {
+            const href = link.getAttribute("href");
+
+            // Impede o salto para o topo enquanto o link
+            // ainda estiver configurado como "#".
+            if (!href || href === "#") {
+                event.preventDefault();
+            }
+
+            // Remove o estado ativo dos outros itens.
+            navItems.forEach((navItem) => {
+                navItem.classList.remove("active");
+
+                const navLink =
+                    navItem.querySelector(".nav-link");
+
+                if (navLink) {
+                    navLink.removeAttribute("aria-current");
+                }
+            });
+
+            // Ativa o item clicado.
+            item.classList.add("active");
+            link.setAttribute("aria-current", "page");
+
+            // Atualiza o título da página demonstrativa.
+            const navText = link.querySelector(".nav-text");
+            const pageTitle =
+                document.querySelector(".main-header h1");
+
+            if (navText && pageTitle) {
+                pageTitle.textContent =
+                    navText.textContent.trim();
+            }
+
+            // Fecha o menu depois da seleção no celular.
+            if (isMobile()) {
+                closeMobileSidebar();
+            }
+        });
+    });
+
+    // Mantém o Dashboard selecionado inicialmente.
+    const initialActiveLink = document.querySelector(
+        ".nav-item.active .nav-link"
+    );
+
+    if (initialActiveLink) {
+        initialActiveLink.setAttribute("aria-current", "page");
+    }
+
+    // =========================================
+    // 6. AVISOS TEMPORÁRIOS
+    // =========================================
+
+    function showNotice(message) {
+        let notice = document.getElementById("barberFlowNotice");
+
+        if (!notice) {
+            notice = document.createElement("div");
+            notice.id = "barberFlowNotice";
+            notice.setAttribute("role", "status");
+
+            notice.style.cssText = `
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                z-index: 1300;
+                max-width: calc(100vw - 40px);
+                padding: 14px 18px;
+                border-radius: 12px;
+                background: #111827;
+                color: #ffffff;
+                box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+                font-family: Inter, sans-serif;
+                font-size: 13px;
+                line-height: 1.5;
+            `;
+
+            document.body.appendChild(notice);
         }
 
+        notice.textContent = message;
+        notice.hidden = false;
     }
 
-});
+    // =========================================
+    // 7. MENU DE OPÇÕES DO PERFIL
+    // =========================================
 
+    let profilePopover = null;
 
-/* =====================================================
-   AJUSTAR AO REDIMENSIONAR A TELA
-   ===================================================== */
+    function closeProfileMenu() {
+        if (profilePopover) {
+            profilePopover.hidden = true;
+        }
 
-let previousMobileState = isMobile();
-
-window.addEventListener("resize", () => {
-
-    const currentMobileState = isMobile();
-
-
-    /* ---------------------------------------------
-       Mudou de desktop para mobile
-    --------------------------------------------- */
-
-    if (
-        !previousMobileState &&
-        currentMobileState
-    ) {
-
-        sidebar.classList.remove("mobile-open");
-
-        sidebarOverlay.classList.remove("active");
-
-        document.body.style.overflow = "";
-
+        if (profileButton) {
+            profileButton.setAttribute("aria-expanded", "false");
+        }
     }
 
+    if (profileButton) {
+        profileButton.setAttribute("aria-haspopup", "true");
+        profileButton.setAttribute("aria-expanded", "false");
 
-    /* ---------------------------------------------
-       Mudou de mobile para desktop
-    --------------------------------------------- */
+        // Cria o menu sem precisar alterar o HTML.
+        profilePopover = document.createElement("div");
+        profilePopover.className = "profile-popover";
+        profilePopover.hidden = true;
 
-    if (
-        previousMobileState &&
-        !currentMobileState
-    ) {
+        profilePopover.innerHTML = `
+            <button type="button" data-profile-action="account">
+                <i class="fa-regular fa-user" aria-hidden="true"></i>
+                Meu perfil
+            </button>
 
-        sidebar.classList.remove("mobile-open");
+            <button type="button" data-profile-action="settings">
+                <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                Configurações
+            </button>
+        `;
 
-        sidebarOverlay.classList.remove("active");
+        document.body.appendChild(profilePopover);
 
-        document.body.style.overflow = "";
+        profileButton.addEventListener("click", (event) => {
+            event.stopPropagation();
 
-        const savedState =
-            localStorage.getItem(
-                "barberflow-sidebar-collapsed"
+            const shouldOpen = profilePopover.hidden;
+
+            closeProfileMenu();
+
+            if (!shouldOpen) return;
+
+            const rect = profileButton.getBoundingClientRect();
+            const menuWidth = 190;
+
+            const left = Math.max(
+                12,
+                Math.min(
+                    rect.right - menuWidth,
+                    window.innerWidth - menuWidth - 12
+                )
             );
 
-        if (savedState === "true") {
-            sidebar.classList.add("collapsed");
-        }
+            const top = Math.min(
+                rect.bottom + 8,
+                window.innerHeight - 120
+            );
 
+            profilePopover.style.left = `${left}px`;
+            profilePopover.style.top = `${top}px`;
+
+            profilePopover.hidden = false;
+            profileButton.setAttribute("aria-expanded", "true");
+        });
+
+        profilePopover.addEventListener("click", (event) => {
+            const button = event.target.closest(
+                "[data-profile-action]"
+            );
+
+            if (!button) return;
+
+            const action = button.dataset.profileAction;
+
+            if (action === "account") {
+                showNotice(
+                    "A página Meu perfil ainda precisa ser conectada."
+                );
+            }
+
+            if (action === "settings") {
+                showNotice(
+                    "A página Configurações ainda precisa ser conectada."
+                );
+            }
+
+            closeProfileMenu();
+        });
+
+        // Fecha o menu ao clicar fora dele.
+        document.addEventListener("click", (event) => {
+            if (
+                profilePopover &&
+                !profilePopover.hidden &&
+                !profilePopover.contains(event.target) &&
+                !profileButton.contains(event.target)
+            ) {
+                closeProfileMenu();
+            }
+        });
     }
 
+    // =========================================
+    // 8. CONFIRMAÇÃO DO BOTÃO SAIR
+    // =========================================
 
-    previousMobileState = currentMobileState;
+    let logoutDialog = null;
 
-});
+    function closeLogoutDialog() {
+        if (logoutDialog) {
+            logoutDialog.hidden = true;
+        }
+    }
 
+    if (logoutButton) {
+        logoutDialog = document.createElement("div");
+        logoutDialog.className = "logout-dialog";
+        logoutDialog.hidden = true;
 
-/* =====================================================
-   INICIALIZAÇÃO
-   ===================================================== */
+        logoutDialog.innerHTML = `
+            <section
+                class="logout-card"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="logoutTitle"
+                aria-describedby="logoutDescription"
+            >
+                <h2 id="logoutTitle">
+                    Deseja sair do painel?
+                </h2>
 
-updateToggleLabel();
+                <p id="logoutDescription">
+                    Você poderá entrar novamente quando quiser.
+                    Confirme para continuar.
+                </p>
 
+                <div class="logout-actions">
+                    <button
+                        class="logout-cancel"
+                        type="button"
+                    >
+                        Cancelar
+                    </button>
 
-/* =====================================================
-   ANIMAÇÃO INICIAL DOS ITENS
-   ===================================================== */
+                    <button
+                        class="logout-confirm"
+                        type="button"
+                    >
+                        Confirmar saída
+                    </button>
+                </div>
+            </section>
+        `;
 
-navItems.forEach((item, index) => {
+        document.body.appendChild(logoutDialog);
 
-    item.style.opacity = "0";
-    item.style.transform = "translateX(-8px)";
+        const cancelButton =
+            logoutDialog.querySelector(".logout-cancel");
 
-    setTimeout(() => {
+        const confirmButton =
+            logoutDialog.querySelector(".logout-confirm");
 
-        item.style.transition =
-            "opacity 0.35s ease, transform 0.35s ease";
+        // Abre a confirmação.
+        logoutButton.addEventListener("click", () => {
+            closeProfileMenu();
 
-        item.style.opacity = "1";
-        item.style.transform = "translateX(0)";
+            logoutDialog.hidden = false;
+            cancelButton.focus();
+        });
 
-    }, 80 + (index * 35));
+        // Cancela a saída.
+        cancelButton.addEventListener(
+            "click",
+            closeLogoutDialog
+        );
 
-});
+        // Fecha ao clicar fora da caixa.
+        logoutDialog.addEventListener("click", (event) => {
+            if (event.target === logoutDialog) {
+                closeLogoutDialog();
+            }
+        });
 
+        // A saída real será integrada ao login.
+        confirmButton.addEventListener("click", () => {
+            closeLogoutDialog();
 
+            showNotice(
+                "A saída real precisa ser conectada ao sistema de login."
+            );
+        });
+    }
+
+    // =========================================
+    // 9. INICIALIZAÇÃO
+    // =========================================
+
+    closeMobileSidebar();
+
+    console.log(
+        "BarberFlow iniciado. Sidebar e navegação carregadas."
+    );
 });
